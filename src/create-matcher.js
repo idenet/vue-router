@@ -10,18 +10,19 @@ import { normalizeLocation } from './util/location'
 import { decode } from './util/query'
 
 export type Matcher = {
-  match: (raw: RawLocation, current?: Route, redirectedFrom?: Location) => Route;
-  addRoutes: (routes: Array<RouteConfig>) => void;
-  addRoute: (parentNameOrRoute: string | RouteConfig, route?: RouteConfig) => void;
-  getRoutes: () => Array<RouteRecord>;
-};
+  match: (raw: RawLocation, current?: Route, redirectedFrom?: Location) => Route
+  addRoutes: (routes: Array<RouteConfig>) => void
+  addRoute: (parentNameOrRoute: string | RouteConfig, route?: RouteConfig) => void
+  getRoutes: () => Array<RouteRecord>
+}
 
 export function createMatcher (
   routes: Array<RouteConfig>,
   router: VueRouter
 ): Matcher {
+  // 创建一个路由映射表
   const { pathList, pathMap, nameMap } = createRouteMap(routes)
-
+  // Route的操作方法
   function addRoutes (routes) {
     createRouteMap(routes, pathList, pathMap, nameMap)
   }
