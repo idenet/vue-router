@@ -38,7 +38,7 @@ export default class VueRouter {
   resolveHooks: Array<?NavigationGuard>
   afterHooks: Array<?AfterNavigationHook>
 
-  constructor (options: RouterOptions = {}) {
+  constructor(options: RouterOptions = {}) {
     if (process.env.NODE_ENV !== 'production') {
       warn(this instanceof VueRouter, `Router must be called with the new operator.`)
     }
@@ -56,6 +56,7 @@ export default class VueRouter {
     if (this.fallback) {
       mode = 'hash'
     }
+    // 非浏览器环境
     if (!inBrowser) {
       mode = 'abstract'
     }
@@ -91,7 +92,7 @@ export default class VueRouter {
       assert(
         install.installed,
         `not installed. Make sure to call \`Vue.use(VueRouter)\` ` +
-          `before creating root instance.`
+        `before creating root instance.`
       )
 
     this.apps.push(app)
@@ -111,6 +112,7 @@ export default class VueRouter {
 
     // main app previously initialized
     // return as we don't need to set up new history listener
+    // 保证后面逻辑只执行一次
     if (this.app) {
       return
     }
@@ -133,6 +135,7 @@ export default class VueRouter {
         history.setupListeners()
         handleInitialScroll(routeOrError)
       }
+      // 初始化的时候做路由过渡
       history.transitionTo(
         history.getCurrentLocation(),
         setupListeners,

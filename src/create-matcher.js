@@ -48,7 +48,7 @@ export function createMatcher (
   function getRoutes () {
     return pathList.map(path => pathMap[path])
   }
-
+  // 根据传入的路径和当前路径计算得到新路径
   function match (
     raw: RawLocation,
     currentRoute?: Route,
@@ -87,6 +87,7 @@ export function createMatcher (
         const path = pathList[i]
         const record = pathMap[path]
         if (matchRoute(record.regex, location.path, location.params)) {
+          // 创建一个新router
           return _createRoute(record, location, redirectedFrom)
         }
       }

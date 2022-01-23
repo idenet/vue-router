@@ -4,6 +4,7 @@ import Link from './components/link'
 export let _Vue
 
 export function install (Vue) {
+  // 判断是否已经注册
   if (install.installed && _Vue === Vue) return
   install.installed = true
 
@@ -19,11 +20,16 @@ export function install (Vue) {
   }
 
   Vue.mixin({
+    // 混入钩子函数 这样每一个组件都能通过全局的mixin拿到 
+    // !为什么只要注册一次就能拿到router
     beforeCreate () {
       if (isDef(this.$options.router)) {
+        // 根router
         this._routerRoot = this
         this._router = this.$options.router
+        // 初始化
         this._router.init(this)
+        // 响应式_route
         Vue.util.defineReactive(this, '_route', this._router.history.current)
       } else {
         this._routerRoot = (this.$parent && this.$parent._routerRoot) || this

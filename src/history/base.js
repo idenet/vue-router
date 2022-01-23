@@ -134,7 +134,8 @@ export class History {
     )
   }
 
-  confirmTransition (route: Route, onComplete: Function, onAbort?: Function) {
+confirmTransition(route: Route, onComplete: Function, onAbort ?: Function) {
+  // 当前路径
     const current = this.current
     this.pending = route
     const abort = err => {
@@ -169,12 +170,12 @@ export class History {
       }
       return abort(createNavigationDuplicatedError(current, route))
     }
-
+    // 更新的路由  销毁的路由 当前活动的路由
     const { updated, deactivated, activated } = resolveQueue(
       this.current.matched,
       route.matched
     )
-
+    // 一维数组
     const queue: Array<?NavigationGuard> = [].concat(
       // in-component leave guards
       extractLeaveGuards(deactivated),
@@ -187,7 +188,7 @@ export class History {
       // async components
       resolveAsyncComponents(activated)
     )
-
+      // 迭代器
     const iterator = (hook: NavigationGuard, next) => {
       if (this.pending !== route) {
         return abort(createNavigationCancelledError(current, route))
@@ -222,8 +223,9 @@ export class History {
         abort(e)
       }
     }
-
-    runQueue(queue, iterator, () => {
+    //
+  runQueue(queue, iterator, () => {
+      // 7- 最后
       // wait until async components are resolved before
       // extracting in-component enter guards
       const enterGuards = extractEnterGuards(activated)
@@ -315,6 +317,7 @@ function extractGuards (
   bind: Function,
   reverse?: boolean
 ): Array<?Function> {
+  // 拍平组件
   const guards = flatMapComponents(records, (def, instance, match, key) => {
     const guard = extractGuard(def, name)
     if (guard) {
